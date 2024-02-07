@@ -200,6 +200,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fastify/type-provider-typebox@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@fastify/type-provider-typebox@npm:4.0.0"
+  peerDependencies:
+    "@sinclair/typebox": ">=0.26 <=0.32"
+  checksum: 10c0/1134f9e8873c4057a2dc18fc85729e3ea3a33bcaaf91efd66bfca63ac2bf9715f33f3412643ecba0a5120e7861235580b13f4bc1a46dd12c5c6ecc4ed5574a46
+  languageName: node
+  linkType: hard
+
 "@isaacs/cliui@npm:^8.0.2":
   version: 8.0.2
   resolution: "@isaacs/cliui@npm:8.0.2"
@@ -240,6 +249,13 @@ __metadata:
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
   checksum: 10c0/5bd7576bb1b38a47a7fc7b51ac9f38748e772beebc56200450c4a817d712232b8f1d3ef70532c80840243c657d491cf6a6be1e3a214cff907645819fdc34aadd
+  languageName: node
+  linkType: hard
+
+"@sinclair/typebox@npm:^0.32.13":
+  version: 0.32.13
+  resolution: "@sinclair/typebox@npm:0.32.13"
+  checksum: 10c0/edda6352717096621c4bfc32025927074d094d1d50be3bd380363d5683062fcdf949653689cf1d3ed457866678561d762002f74d7e11a439457de6c4f4789e39
   languageName: node
   linkType: hard
 
@@ -710,6 +726,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "fastify-trial@workspace:."
   dependencies:
+    "@fastify/type-provider-typebox": "npm:^4.0.0"
+    "@sinclair/typebox": "npm:^0.32.13"
     "@tsconfig/node20": "npm:^20.1.2"
     "@tsconfig/recommended": "npm:^1.0.3"
     "@types/node": "npm:^20"

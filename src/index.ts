@@ -1,16 +1,27 @@
-// Import the framework and instantiate it
+import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import Fastify from "fastify";
+import { Type } from "@sinclair/typebox";
 
 const fastify = Fastify({
   logger: true,
-});
+}).withTypeProvider<TypeBoxTypeProvider>();
 
-// Declare a route
-fastify.get("/", async function handler(request, reply) {
-  return { hello: "world" };
-});
+fastify.get(
+  "/",
+  {
+    schema: {
+      querystring: Type.Object({
+        to: Type.String(),
+      }),
+    },
+  },
+  async function handler(request, reply) {
+    const { to } = request.query;
 
-// Run the server!
+    return { to };
+  }
+);
+
 try {
   await fastify.listen({ port: 3000 });
 } catch (err) {

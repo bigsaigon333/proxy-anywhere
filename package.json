@@ -3,9 +3,11 @@
   "packageManager": "yarn@4.1.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx src/index.ts"
+    "dev": "tsx src/index.ts --watch"
   },
   "dependencies": {
+    "@fastify/type-provider-typebox": "^4.0.0",
+    "@sinclair/typebox": "^0.32.13",
     "fastify": "^4.26.0"
   },
   "devDependencies": {
