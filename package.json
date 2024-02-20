@@ -1,20 +1,49 @@
 {
   "name": "fastify-trial",
   "packageManager": "yarn@4.1.0",
+  "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "tsx src/index.ts --watch"
+    "dev": "NODE_ENV=development tsx watch src/index.ts",
+    "build": "tsup",
+    "start": "NODE_ENV=production node dist/index.js"
   },
   "dependencies": {
+    "@fastify/cors": "^8.5.0",
+    "@fastify/reply-from": "^9.7.0",
+    "@fastify/swagger": "^8.14.0",
+    "@fastify/swagger-ui": "^1.10.2",
     "@fastify/type-provider-typebox": "^4.0.0",
-    "@sinclair/typebox": "^0.32.13",
-    "fastify": "^4.26.0"
+    "@sinclair/typebox": "^0.32.14",
+    "fastify": "^4.26.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.2",
     "@tsconfig/recommended": "^1.0.3",
-    "@types/node": "^20",
-    "tsx": "^4.7.0",
+    "@types/eslint": "^8.56.2",
+    "@types/node": "^20.11.19",
+    "csv-parse": "^5.5.3",
+    "csv-stringify": "^6.4.5",
+    "eslint": "^8.56.0",
+    "eslint-plugin-unicorn": "^51.0.1",
+    "pino-pretty": "^10.3.1",
+    "prettier": "^3.2.5",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.1",
     "typescript": "^5.3.3"
+  },
+  "eslintConfig": {
+    "env": {
+      "es2024": true
+    },
+    "parserOptions": {
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "plugins": [
+      "unicorn"
+    ],
+    "extends": "plugin:unicorn/recommended"
   }
 }
