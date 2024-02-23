@@ -1,6 +1,4 @@
 import { Type } from "@sinclair/typebox";
-import { ServerResponse } from "http";
-import ky from "ky";
 import { TypedFastifyInstance } from "~/types/fastify.js";
 
 if (process.env.NODE_ENV === "development") {
@@ -17,7 +15,7 @@ export async function RoutePlugin(fastify: TypedFastifyInstance) {
     schema: {
       headers: Type.Object({ to: Type.String() }),
     },
-    preValidation(request, reply, done) {
+    preValidation(request, _, done) {
       const { to } = request.headers;
       const urlPattern = /^https?:\/\//;
 
