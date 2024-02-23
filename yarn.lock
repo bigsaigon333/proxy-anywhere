@@ -1688,34 +1688,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify-trial@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "fastify-trial@workspace:."
-  dependencies:
-    "@fastify/cors": "npm:^8.5.0"
-    "@fastify/reply-from": "npm:^9.7.0"
-    "@fastify/swagger": "npm:^8.14.0"
-    "@fastify/swagger-ui": "npm:^1.10.2"
-    "@fastify/type-provider-typebox": "npm:^4.0.0"
-    "@sinclair/typebox": "npm:^0.32.14"
-    "@tsconfig/node20": "npm:^20.1.2"
-    "@tsconfig/recommended": "npm:^1.0.3"
-    "@types/eslint": "npm:^8.56.2"
-    "@types/node": "npm:^20.11.19"
-    csv-parse: "npm:^5.5.3"
-    csv-stringify: "npm:^6.4.5"
-    eslint: "npm:^8.56.0"
-    eslint-plugin-unicorn: "npm:^51.0.1"
-    fastify: "npm:^4.26.1"
-    pino-pretty: "npm:^10.3.1"
-    prettier: "npm:^3.2.5"
-    tsup: "npm:^8.0.2"
-    tsx: "npm:^4.7.1"
-    typescript: "npm:^5.3.3"
-    zod: "npm:^3.22.4"
-  languageName: unknown
-  linkType: soft
-
 "fastify@npm:^4.26.1":
   version: 4.26.1
   resolution: "fastify@npm:4.26.1"
@@ -3117,6 +3089,34 @@ __metadata:
   checksum: 10c0/c3eed999781a35f7fd935f398b6d8920b6fb00bbc14287bc6de78128ccc1a02c89b95b56742bf7cf0362cc333c61d138532049c7dedc7a328ef13343eff81210
   languageName: node
   linkType: hard
+
+"proxy-anywhere@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "proxy-anywhere@workspace:."
+  dependencies:
+    "@fastify/cors": "npm:^8.5.0"
+    "@fastify/reply-from": "npm:^9.7.0"
+    "@fastify/swagger": "npm:^8.14.0"
+    "@fastify/swagger-ui": "npm:^1.10.2"
+    "@fastify/type-provider-typebox": "npm:^4.0.0"
+    "@sinclair/typebox": "npm:^0.32.14"
+    "@tsconfig/node20": "npm:^20.1.2"
+    "@tsconfig/recommended": "npm:^1.0.3"
+    "@types/eslint": "npm:^8.56.2"
+    "@types/node": "npm:^20.11.19"
+    csv-parse: "npm:^5.5.3"
+    csv-stringify: "npm:^6.4.5"
+    eslint: "npm:^8.56.0"
+    eslint-plugin-unicorn: "npm:^51.0.1"
+    fastify: "npm:^4.26.1"
+    pino-pretty: "npm:^10.3.1"
+    prettier: "npm:^3.2.5"
+    tsup: "npm:^8.0.2"
+    tsx: "npm:^4.7.1"
+    typescript: "npm:^5.3.3"
+    zod: "npm:^3.22.4"
+  languageName: unknown
+  linkType: soft
 
 "pump@npm:^3.0.0":
   version: 3.0.0
