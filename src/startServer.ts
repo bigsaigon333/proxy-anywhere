@@ -31,7 +31,7 @@ export const startServer = async () => {
 
   try {
     fastify
-      .register(RoutePlugin)
+      .register(RoutePlugin, { prefix: "api/proxy" })
       .listen({ port: Number(process.env.PORT) || 8080 });
   } catch (err) {
     fastify.log.error(err);

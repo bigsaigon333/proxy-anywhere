@@ -11,32 +11,43 @@ if (process.env.NODE_ENV === "development") {
 export async function RoutePlugin(fastify: TypedFastifyInstance) {
   fastify.route({
     method: "GET",
-    url: "/",
+    url: "/*",
     schema: {
-      headers: Type.Object({ to: Type.String() }),
+      headers: Type.Object({
+        referer: Type.String(),
+      }),
     },
     preValidation(request, _, done) {
-      const { to } = request.headers;
+      const { referer } = request.headers;
       const urlPattern = /^https?:\/\//;
 
-      if (!urlPattern.test(to)) {
-        throw Error(`Invalid url: ${to}`);
+      if (referer == null || !urlPattern.test(referer)) {
+        throw Error(`Invalid referer: ${referer}`);
       }
 
       done();
     },
     async handler(request, reply) {
-      const { to } = request.headers;
+      const { url } = request;
+      const { referer } = request.headers;
 
-      /**
-       * TODO: 다른 header 옵션, queryParam, 등등 모두 이전하기
-       * 참고: https://github.com/fastify/fastify-http-proxy/blob/master/index.js#L225
-       * https://github.com/fastify/fastify-reply-from/blob/master/index.js
-       */
+      const upstreamOrigin = getProxyUpstream(referer);
+      const path = url.replace(new RegExp("^" + fastify.prefix), "");
 
-      reply.from(to);
+      const upstreamUrl = upstreamOrigin + path;
+      reply.from(upstreamUrl, {
+        rewriteRequestHeaders(_, headers) {
+          request.log.info({ headers }, "upstream request header");
+
+          return headers;
+        },
+      });
 
       return reply;
     },
   });
+}
+
+function getProxyUpstream(key: string) {
+  return "https://sports.news.naver.com";
 }
