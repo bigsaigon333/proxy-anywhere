@@ -23,37 +23,26 @@ export async function RoutePlugin(fastify: TypedFastifyInstance) {
       const { url } = request;
       const { referer } = request.headers;
       const { origin: refererOrigin } = new URL(referer);
+      let intendedPath = url.replace(new RegExp(`^${fastify.prefix}`), "");
 
-      const proxyRule = getProxyRule(refererOrigin);
+      const proxyRule = getProxyRule(refererOrigin, intendedPath);
       if (proxyRule == null) {
-        return reply
-          .status(404)
-          .send({ reason: `No proxy rule found: ${refererOrigin}` });
+        return reply.status(404).send({ reason: `No proxy rule found` });
       }
 
-      const {
-        target: upstreamOrigin,
-        path: proxyPath,
-        rewritePath = {},
-      } = proxyRule;
-      let path = url.replace(new RegExp(`^${fastify.prefix}`), "");
+      const { target: upstreamOrigin, rewritePath = {} } = proxyRule;
 
-      if (!micromatch.isMatch(path, proxyPath)) {
-        return reply
-          .status(404)
-          .send({ reason: `No proxy path found: ${proxyPath}` });
-      }
-
+      let upstreamPath = intendedPath;
       for (const [key, value] of Object.entries(rewritePath)) {
         const regex = new RegExp(key);
 
-        if (regex.test(path)) {
-          path = path.replace(regex, value);
+        if (regex.test(upstreamPath)) {
+          upstreamPath = upstreamPath.replace(regex, value);
           break;
         }
       }
 
-      const upstreamUrl = upstreamOrigin + path;
+      const upstreamUrl = upstreamOrigin + upstreamPath;
       reply.from(upstreamUrl, {
         rewriteRequestHeaders: (_, headers) => {
           this.log.info({ headers }, "upstream request header");

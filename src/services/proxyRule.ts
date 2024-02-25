@@ -1,3 +1,5 @@
+import micromatch from "micromatch";
+
 export type ProxyRule = {
   path: string;
   target: string;
@@ -18,8 +20,14 @@ export const proxyRuleMap = new Map<string, ProxyRule>([
   ],
 ]);
 
-export function getProxyRule(key: string): ProxyRule | undefined {
-  return proxyRuleMap.get(key);
+export function getProxyRule(key: string, path: string): ProxyRule | null {
+  const proxyRule = proxyRuleMap.get(key);
+
+  if (proxyRule == null) return null;
+
+  if (!micromatch.isMatch(path, proxyRule.path)) return null;
+
+  return proxyRule;
 }
 
 /*
