@@ -9,10 +9,10 @@ export const proxyRuleMap = new Map<string, ProxyRule>([
   [
     "https://bigsaigon333.me",
     {
-      path: "*",
+      path: "/naver",
       target: "https://sports.news.naver.com",
       rewritePath: {
-        "^/api": "",
+        "^/naver": "",
       },
     },
   ],

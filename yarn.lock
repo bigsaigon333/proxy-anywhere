@@ -635,6 +635,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/braces@npm:*":
+  version: 3.0.4
+  resolution: "@types/braces@npm:3.0.4"
+  checksum: 10c0/05220f330814364318a1c2f403046d717690cabf3adc8417357b0b12713f92768cf9df76e0e25212b5a2727c8c56765ff19a284c7ece39e0985d0d6fadb6c4aa
+  languageName: node
+  linkType: hard
+
 "@types/eslint@npm:^8.56.2":
   version: 8.56.2
   resolution: "@types/eslint@npm:8.56.2"
@@ -656,6 +663,15 @@ __metadata:
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
   checksum: 10c0/a996a745e6c5d60292f36731dd41341339d4eeed8180bb09226e5c8d23759067692b1d88e5d91d72ee83dfc00d3aca8e7bd43ea120516c17922cbcb7c3e252db
+  languageName: node
+  linkType: hard
+
+"@types/micromatch@npm:^4":
+  version: 4.0.6
+  resolution: "@types/micromatch@npm:4.0.6"
+  dependencies:
+    "@types/braces": "npm:*"
+  checksum: 10c0/deba87b2bb740cb3f206c006baddc2d3f411fdba48e47452fb189a2a1a73cc3d6f6f2e6f52b970d1383e988afd9f12046e50f902ad740f1f8afa3faa273ab2a0
   languageName: node
   linkType: hard
 
@@ -2473,7 +2489,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromatch@npm:^4.0.4":
+"micromatch@npm:^4.0.4, micromatch@npm:^4.0.5":
   version: 4.0.5
   resolution: "micromatch@npm:4.0.5"
   dependencies:
@@ -3103,12 +3119,14 @@ __metadata:
     "@tsconfig/node20": "npm:^20.1.2"
     "@tsconfig/recommended": "npm:^1.0.3"
     "@types/eslint": "npm:^8.56.2"
+    "@types/micromatch": "npm:^4"
     "@types/node": "npm:^20.11.19"
     csv-parse: "npm:^5.5.3"
     csv-stringify: "npm:^6.4.5"
     eslint: "npm:^8.56.0"
     eslint-plugin-unicorn: "npm:^51.0.1"
     fastify: "npm:^4.26.1"
+    micromatch: "npm:^4.0.5"
     pino-pretty: "npm:^10.3.1"
     prettier: "npm:^3.2.5"
     tsup: "npm:^8.0.2"

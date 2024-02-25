@@ -1,4 +1,5 @@
 import { Type } from "@sinclair/typebox";
+import micromatch from "micromatch";
 import { getProxyRule } from "~/services/proxyRule.js";
 import { TypedFastifyInstance } from "~/types/fastify.js";
 
@@ -30,8 +31,18 @@ export async function RoutePlugin(fastify: TypedFastifyInstance) {
           .send({ reason: `No proxy rule found: ${refererOrigin}` });
       }
 
-      const { target: upstreamOrigin, rewritePath = {} } = proxyRule;
+      const {
+        target: upstreamOrigin,
+        path: proxyPath,
+        rewritePath = {},
+      } = proxyRule;
       let path = url.replace(new RegExp(`^${fastify.prefix}`), "");
+
+      if (!micromatch.isMatch(path, proxyPath)) {
+        return reply
+          .status(404)
+          .send({ reason: `No proxy path found: ${proxyPath}` });
+      }
 
       for (const [key, value] of Object.entries(rewritePath)) {
         const regex = new RegExp(key);
