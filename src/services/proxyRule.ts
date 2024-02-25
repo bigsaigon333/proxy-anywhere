@@ -11,6 +11,9 @@ export const proxyRuleMap = new Map<string, ProxyRule>([
     {
       path: "*",
       target: "https://sports.news.naver.com",
+      rewritePath: {
+        "^/api": "",
+      },
     },
   ],
 ]);

@@ -30,8 +30,17 @@ export async function RoutePlugin(fastify: TypedFastifyInstance) {
           .send({ reason: `No proxy rule found: ${refererOrigin}` });
       }
 
-      const { target: upstreamOrigin } = proxyRule;
-      const path = url.replace(new RegExp("^" + fastify.prefix), "");
+      const { target: upstreamOrigin, rewritePath = {} } = proxyRule;
+      let path = url.replace(new RegExp(`^${fastify.prefix}`), "");
+
+      for (const [key, value] of Object.entries(rewritePath)) {
+        const regex = new RegExp(key);
+
+        if (regex.test(path)) {
+          path = path.replace(regex, value);
+          break;
+        }
+      }
 
       const upstreamUrl = upstreamOrigin + path;
       reply.from(upstreamUrl, {
