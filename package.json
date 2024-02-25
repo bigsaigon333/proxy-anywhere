@@ -16,8 +16,7 @@
     "@fastify/type-provider-typebox": "^4.0.0",
     "@sinclair/typebox": "^0.32.14",
     "fastify": "^4.26.1",
-    "micromatch": "^4.0.5",
-    "zod": "^3.22.4"
+    "micromatch": "^4.0.5"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.2",
@@ -25,8 +24,6 @@
     "@types/eslint": "^8.56.2",
     "@types/micromatch": "^4",
     "@types/node": "^20.11.19",
-    "csv-parse": "^5.5.3",
-    "csv-stringify": "^6.4.5",
     "eslint": "^8.56.0",
     "eslint-plugin-unicorn": "^51.0.1",
     "pino-pretty": "^10.3.1",
