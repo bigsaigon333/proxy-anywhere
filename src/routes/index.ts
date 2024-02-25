@@ -41,23 +41,17 @@ export async function RoutePlugin(fastify: TypedFastifyInstance) {
 
       const {
         target: upstreamOrigin,
-        rewritePath = {},
+        rewritePath: rewriteRules = {},
         queryString: upstreamQueryString = {},
       } = proxyRule;
 
-      let upstreamPath = hostPath;
-      for (const [key, value] of Object.entries(rewritePath)) {
-        const regex = new RegExp(key);
+      const upstreamPath = rewritePath(hostPath, rewriteRules);
 
-        if (regex.test(upstreamPath)) {
-          upstreamPath = upstreamPath.replace(regex, value);
-          break;
-        }
-      }
-
-      const upstreamUrl = new URL(upstreamOrigin + upstreamPath);
-      appendSearchParams(upstreamUrl, hostQueryString);
-      appendSearchParams(upstreamUrl, upstreamQueryString);
+      const upstreamUrl = appendSearchParams(
+        new URL(upstreamOrigin + upstreamPath),
+        hostQueryString,
+        upstreamQueryString,
+      );
 
       reply.from(upstreamUrl.href, {
         rewriteRequestHeaders: (_, headers) => {
@@ -72,8 +66,28 @@ export async function RoutePlugin(fastify: TypedFastifyInstance) {
   });
 }
 
-function appendSearchParams(url: URL, query: Record<string, string | number>) {
-  for (const [key, value] of Object.entries(query)) {
-    url.searchParams.append(key, String(value));
+function rewritePath(
+  originalPath: string,
+  rewriteRules: Record<string, string>,
+) {
+  for (const [key, value] of Object.entries(rewriteRules)) {
+    const regex = new RegExp(key);
+
+    if (regex.test(originalPath)) {
+      return originalPath.replace(regex, value);
+    }
   }
+}
+
+function appendSearchParams(
+  url: URL,
+  ...queries: Record<string, string | number>[]
+) {
+  const newUrl = new URL(url);
+
+  for (const [key, value] of queries.flatMap(Object.entries)) {
+    newUrl.searchParams.append(key, String(value));
+  }
+
+  return newUrl;
 }
