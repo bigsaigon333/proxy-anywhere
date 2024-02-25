@@ -1,4 +1,5 @@
 import { Type } from "@sinclair/typebox";
+import { getProxyRule } from "~/services/proxyRule.js";
 import { TypedFastifyInstance } from "~/types/fastify.js";
 
 if (process.env.NODE_ENV === "development") {
@@ -20,8 +21,16 @@ export async function RoutePlugin(fastify: TypedFastifyInstance) {
     async handler(request, reply) {
       const { url } = request;
       const { referer } = request.headers;
+      const { origin: refererOrigin } = new URL(referer);
 
-      const upstreamOrigin = getProxyUpstream(referer);
+      const proxyRule = getProxyRule(refererOrigin);
+      if (proxyRule == null) {
+        return reply
+          .status(404)
+          .send({ reason: `No proxy rule found: ${refererOrigin}` });
+      }
+
+      const { target: upstreamOrigin } = proxyRule;
       const path = url.replace(new RegExp("^" + fastify.prefix), "");
 
       const upstreamUrl = upstreamOrigin + path;
@@ -36,8 +45,4 @@ export async function RoutePlugin(fastify: TypedFastifyInstance) {
       return reply;
     },
   });
-}
-
-function getProxyUpstream(key: string) {
-  return "https://sports.news.naver.com";
 }
