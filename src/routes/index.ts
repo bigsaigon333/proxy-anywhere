@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import micromatch from "micromatch";
+import { URL } from "node:url";
 import { getProxyRule } from "~/services/proxyRule.js";
 import { TypedFastifyInstance } from "~/types/fastify.js";
 
@@ -18,21 +18,34 @@ export async function RoutePlugin(fastify: TypedFastifyInstance) {
       headers: Type.Object({
         referer: Type.String({ pattern: "^https?://" }),
       }),
+      params: Type.Object({
+        "*": Type.String(),
+      }),
+      querystring: Type.Record(
+        Type.String(),
+        Type.Union([Type.String(), Type.Number()]),
+      ),
     },
     async handler(request, reply) {
-      const { url } = request;
-      const { referer } = request.headers;
-      const { origin: refererOrigin } = new URL(referer);
-      let intendedPath = url.replace(new RegExp(`^${fastify.prefix}`), "");
+      const {
+        query: hostQueryString,
+        params: { "*": hostPath },
+        headers: { referer },
+      } = request;
 
-      const proxyRule = getProxyRule(refererOrigin, intendedPath);
+      const { origin: refererOrigin } = new URL(referer);
+      const proxyRule = getProxyRule(refererOrigin, hostPath);
       if (proxyRule == null) {
         return reply.status(404).send({ reason: `No proxy rule found` });
       }
 
-      const { target: upstreamOrigin, rewritePath = {} } = proxyRule;
+      const {
+        target: upstreamOrigin,
+        rewritePath = {},
+        queryString: upstreamQueryString = {},
+      } = proxyRule;
 
-      let upstreamPath = intendedPath;
+      let upstreamPath = hostPath;
       for (const [key, value] of Object.entries(rewritePath)) {
         const regex = new RegExp(key);
 
@@ -42,8 +55,11 @@ export async function RoutePlugin(fastify: TypedFastifyInstance) {
         }
       }
 
-      const upstreamUrl = upstreamOrigin + upstreamPath;
-      reply.from(upstreamUrl, {
+      const upstreamUrl = new URL(upstreamOrigin + upstreamPath);
+      appendSearchParams(upstreamUrl, hostQueryString);
+      appendSearchParams(upstreamUrl, upstreamQueryString);
+
+      reply.from(upstreamUrl.href, {
         rewriteRequestHeaders: (_, headers) => {
           this.log.info({ headers }, "upstream request header");
 
@@ -54,4 +70,10 @@ export async function RoutePlugin(fastify: TypedFastifyInstance) {
       return reply;
     },
   });
+}
+
+function appendSearchParams(url: URL, query: Record<string, string | number>) {
+  for (const [key, value] of Object.entries(query)) {
+    url.searchParams.append(key, String(value));
+  }
 }

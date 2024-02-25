@@ -4,7 +4,7 @@ export type ProxyRule = {
   path: string;
   target: string;
   rewritePath?: Record<string, string>;
-  queryString?: Record<string, string>;
+  queryString?: Record<string, string | number>;
 };
 
 export const proxyRuleMap = new Map<string, ProxyRule>([
@@ -15,6 +15,10 @@ export const proxyRuleMap = new Map<string, ProxyRule>([
       target: "https://sports.news.naver.com",
       rewritePath: {
         "^/naver": "",
+      },
+      queryString: {
+        abcd: "efg",
+        "1234": 5678,
       },
     },
   ],
