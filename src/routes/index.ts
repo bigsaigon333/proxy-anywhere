@@ -14,18 +14,8 @@ export async function RoutePlugin(fastify: TypedFastifyInstance) {
     url: "*",
     schema: {
       headers: Type.Object({
-        referer: Type.String(),
+        referer: Type.String({ pattern: "^https?://" }),
       }),
-    },
-    preValidation(request, _, done) {
-      const { referer } = request.headers;
-      const urlPattern = /^https?:\/\//;
-
-      if (referer == null || !urlPattern.test(referer)) {
-        throw Error(`Invalid referer: ${referer}`);
-      }
-
-      done();
     },
     async handler(request, reply) {
       const { url } = request;
@@ -36,8 +26,8 @@ export async function RoutePlugin(fastify: TypedFastifyInstance) {
 
       const upstreamUrl = upstreamOrigin + path;
       reply.from(upstreamUrl, {
-        rewriteRequestHeaders(_, headers) {
-          request.log.info({ headers }, "upstream request header");
+        rewriteRequestHeaders: (_, headers) => {
+          this.log.info({ headers }, "upstream request header");
 
           return headers;
         },
