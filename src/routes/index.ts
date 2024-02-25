@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === "development") {
 export async function RoutePlugin(fastify: TypedFastifyInstance) {
   fastify.route({
     method: "GET",
-    url: "/*",
+    url: "*",
     schema: {
       headers: Type.Object({
         referer: Type.String(),
